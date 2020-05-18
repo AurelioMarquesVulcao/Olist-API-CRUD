@@ -15,7 +15,7 @@ CORS(app)
 
 # Uso de arquivo .env para proteger as variavéis
 # Use of .env file to protect variables
-DB = config('ACCESS_DB_OLIST', cast=str)
+DB = config('ACCESS_DB', cast=str)
 app.config['MONGO_URI'] = DB
 
 mongo = PyMongo(app)
@@ -23,24 +23,17 @@ mongo = PyMongo(app)
 
 # metodo de envio de dados.
 # method of sending data.
-@app.route('/', methods=['POST'])
+@app.route('/author', methods=['POST'])
 def create_user():
     name = request.json['name']
-    name2 = request.json['name2']
-    password = request.json['password']
 
-    if name and name2 and password:
-        hashed_password = generate_password_hash(password)
-        # db.anydatas - anydatas é a minha base de dados
+    if name:
         id = mongo.db.anydatas.insert(
-            {'name': name, 'name2': name2, 'password': hashed_password}
+            {'name': name}
         )
         response = {
             'id': str(id),
             'name': name,
-            'name2': name2,
-            'password': hashed_password
-
         }
         return response
     else:
@@ -50,7 +43,7 @@ def create_user():
 
 
 # metodo de recebimento de dados
-@app.route('/', methods=['GET'])
+@app.route('/author', methods=['GET'])
 def get_users():
     # a variavél que armazena pode ser qualquer nome que se encaixe na sua aplicação
     any_data = mongo.db.anydatas.find()
@@ -58,8 +51,6 @@ def get_users():
     response = json_util.dumps(any_data)
     # Response do flask melhora a Resposta
     return Response(response, mimetype='application/json')
-
-
 
 
 if __name__ == "__main__":
