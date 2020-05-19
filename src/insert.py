@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from decouple import config
+# from decouple import config
 import csv
 
 
@@ -19,7 +19,7 @@ def reader_authors():
 
 # print(reader_authors())
 
-url = config('ACCESS_DB', cast=str)
+url = config('mongodb+srv://Aurelioprod:U0PWxXrhk4KmFpp4@vulcaotech-pdii4.mongodb.net/Olist?retryWrites=true&w=majority')
 # print(url)
 cluster = MongoClient(url)
 db = cluster['Olist']

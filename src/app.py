@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from bson import json_util
 from bson.objectid import ObjectId
 from flask_cors import CORS
-from decouple import config
+# from decouple import config
 import os
 
 
@@ -16,7 +16,7 @@ CORS(app)
 
 # Uso de arquivo .env para proteger as variavéis
 # Use of .env file to protect variables
-DB = config('ACCESS_DB', cast=str)
+DB = config('mongodb+srv://Aurelioprod:U0PWxXrhk4KmFpp4@vulcaotech-pdii4.mongodb.net/Olist?retryWrites=true&w=majority')
 app.config['MONGO_URI'] = DB
 
 mongo = PyMongo(app)
