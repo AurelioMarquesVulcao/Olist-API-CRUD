@@ -88,12 +88,19 @@ def create_books():
     return {"message": "recebido"}
 
 
+# @app.route('/books/<id>', methods=['GET'])
+# def get_book_id(id):
+#     any_data = mongo.db.books.find_one({'_id': ObjectId(id)})
+#     response = json_util.dumps(any_data)
+#     return Response(response, mimetype='application/json')
+
+
+
 @app.route('/books/<name>', methods=['GET'])
-def get_book(name):
-    any_data = mongo.db.books.find_one({"name": name})
+def get_book_name(name):
+    any_data = mongo.db.books.find({"name": name})
     response = json_util.dumps(any_data)
     return Response(response, mimetype='application/json')
-
 
 
 @app.route('/<id>', methods=['DELETE'])
@@ -113,12 +120,12 @@ def update_book(id):
         mongo.db.books.update_one(
             {'_id': ObjectId(id)},
             {'$set': {
-            'id': str(id),
-            'name': name,
-            'publication_year': publication_year,
-            'edition': edition,
-            'author': author
-        }})
+                'id': str(id),
+                'name': name,
+                'publication_year': publication_year,
+                'edition': edition,
+                'author': author
+            }})
         response = jsonify(
             {"message": "User " + id + " was Update successfully"})
         return response
@@ -133,11 +140,6 @@ def not_found(error=None):
     })
     response.status_code = 404
     return response
-
-
-
-
-
 
 
 if __name__ == "__main__":
