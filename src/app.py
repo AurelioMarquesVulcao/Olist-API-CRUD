@@ -24,7 +24,7 @@ mongo = PyMongo(app)
 # metodo de envio de dados.
 # method of sending data.
 @app.route('/author', methods=['POST'])
-def create_user():
+def create_author():
     name = request.json['name']
 
     if name:
@@ -41,18 +41,61 @@ def create_user():
 
     return {"message": "recebido"}
 
+    # metodo de recebimento de dados
 
-# metodo de recebimento de dados
+
 @app.route('/author', methods=['GET'])
-def get_users():
-    # a variavél que armazena pode ser qualquer nome que se encaixe na sua aplicação
+def get_author():
+
     any_data = mongo.db.anydatas.find()
-    # json util torna a resposta em algo util
+
     response = json_util.dumps(any_data)
-    # Response do flask melhora a Resposta
+
+    return Response(response, mimetype='application/json')
+
+
+@app.route('/books', methods=['GET'])
+def get_books():
+    any_data = mongo.db.books.find()
+    response = json_util.dumps(any_data)
+
+    return Response(response, mimetype='application/json')
+
+
+@app.route('/books', methods=['POST'])
+def create_books():
+    name = request.json['name']
+    publication_year = request.json['publication_year']
+    edition = request.json['edition']
+    author = request.json['author']
+
+    if name and publication_year and edition and author:
+        id = mongo.db.books.insert(
+            {'name': name, 'publication_year': publication_year,
+                'edition': edition, 'author': author}
+        )
+        response = {
+            'id': str(id),
+            'name': name,
+            'publication_year': publication_year,
+            'edition': edition,
+            'author': author
+        }
+        return response
+    else:
+        return not_found()
+
+    return {"message": "recebido"}
+
+
+@app.route('/books/<name>', methods=['GET'])
+def get_book(name):
+    any_data = mongo.db.books.find_one({"name": name})
+    response = json_util.dumps(any_data)
     return Response(response, mimetype='application/json')
 
 
 if __name__ == "__main__":
     # para produção desativar debug=True
+    # for production disable debug = True
     app.run(host='0.0.0.0', debug=True)
