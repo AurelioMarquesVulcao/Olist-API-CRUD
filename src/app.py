@@ -95,6 +95,51 @@ def get_book(name):
     return Response(response, mimetype='application/json')
 
 
+
+@app.route('/<id>', methods=['DELETE'])
+def delete_book(id):
+    mongo.db.books.delete_one({'_id': ObjectId(id)})
+    response = jsonify({"message": "User " + id + " was Deleted successfully"})
+    return response
+
+
+@app.route('/<id>', methods=['PUT'])
+def update_book(id):
+    name = request.json['name']
+    name2 = request.json['name2']
+    password = request.json['password']
+
+    if name and publication_year and edition and author:
+        mongo.db.books.update_one(
+            {'_id': ObjectId(id)},
+            {'$set': {
+            'id': str(id),
+            'name': name,
+            'publication_year': publication_year,
+            'edition': edition,
+            'author': author
+        }})
+        response = jsonify(
+            {"message": "User " + id + " was Update successfully"})
+        return response
+
+
+# para erros usuarios não encontrados ou problemas na base de dados
+@app.errorhandler(404)
+def not_found(error=None):
+    response = jsonify({
+        'message': 'Not Found: ' + request.url,
+        'status': 404
+    })
+    response.status_code = 404
+    return response
+
+
+
+
+
+
+
 if __name__ == "__main__":
     # para produção desativar debug=True
     # for production disable debug = True
