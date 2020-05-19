@@ -13,7 +13,7 @@ def reader_authors():
             array.append(i[0])
 
         for c in range(0, len(array)):
-            author.append({'_id': c, 'name': array[c]}) 
+            author.append({'name': array[c]}) 
     return author
 
 

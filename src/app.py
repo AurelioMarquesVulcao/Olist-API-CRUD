@@ -5,6 +5,7 @@ from bson import json_util
 from bson.objectid import ObjectId
 from flask_cors import CORS
 from decouple import config
+import os
 
 
 app = Flask(__name__)
@@ -23,7 +24,7 @@ mongo = PyMongo(app)
 
 # metodo de envio de dados.
 # method of sending data.
-@app.route('/author', methods=['POST'])
+@app.route('/authors', methods=['POST'])
 def create_author():
     name = request.json['name']
 
@@ -44,13 +45,10 @@ def create_author():
     # metodo de recebimento de dados
 
 
-@app.route('/author', methods=['GET'])
-def get_author():
-
-    any_data = mongo.db.anydatas.find()
-
+@app.route('/author/<id>', methods=['GET'])
+def get_author(id):
+    any_data = mongo.db.authors.find({'_id': ObjectId(id)})
     response = json_util.dumps(any_data)
-
     return Response(response, mimetype='application/json')
 
 
@@ -58,7 +56,6 @@ def get_author():
 def get_books():
     any_data = mongo.db.books.find()
     response = json_util.dumps(any_data)
-
     return Response(response, mimetype='application/json')
 
 
@@ -143,6 +140,5 @@ def not_found(error=None):
 
 
 if __name__ == "__main__":
-    # para produção desativar debug=True
-    # for production disable debug = True
-    app.run(host='0.0.0.0', debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)

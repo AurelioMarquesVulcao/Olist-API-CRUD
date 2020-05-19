@@ -1,23 +1,17 @@
 #API crud for book registration.
 <hr>
 
-## Requirement 1 register more than 1 million authors.
+Na pasta raiz do código insirir o seguinte comando `docker-compose up -d` a aplicação ira ser montada em um container docker e ficara a disposição na porta 5000.
 
+Os testes estão na pasta SRC e possuem o nome tests.py para rodar os testes digite`py src/tests.py`
 
-### Each author record in the database must have the following fields:
+Para inserir os autores deve ser rodado os código `py src/insert.py`.
 
-* id (self-generated)
-* name
+Para postar novos livros usar o exemplo:
 
-
-
-## Requirement 2 to be able to add books via viewed post and edicts (CRUD).
-
-
-### Each book record has the fields:
-
-id (self-generated)
-name
-edition
-publication_year
-authors (more than one author can write a book)
+`{
+	"name": "teste01",
+    "publication_year": 2019, 
+    "edition": "2 edição", 
+    "author": ["5ec44e21fc4168f0e37b1d74"]
+}`
