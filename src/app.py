@@ -16,7 +16,7 @@ CORS(app)
 
 # Uso de arquivo .env para proteger as variavéis
 # Use of .env file to protect variables
-DB = config('mongodb+srv://Aurelioprod:U0PWxXrhk4KmFpp4@vulcaotech-pdii4.mongodb.net/Olist?retryWrites=true&w=majority')
+DB = ('mongodb+srv://Aurelioprod:U0PWxXrhk4KmFpp4@vulcaotech-pdii4.mongodb.net/Olist?retryWrites=true&w=majority')
 app.config['MONGO_URI'] = DB
 
 mongo = PyMongo(app)
